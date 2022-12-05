@@ -1,0 +1,13 @@
+1. We need to calculate how many calories all elf are carrying
+2. Each elf brough some food, snaks, etc and they write it down
+3. Each new line it's the total calories for one item
+4. It will be separated by a space if any time is written down
+5. There are a total of 5 elfs (not relevant)
+6. find the one with most calories and get the total amount of calories
+
+Solution
+1. Copy the input to a text file, preser new lines and spaces
+2. Read the file line by line and detect if there is space to identify finishing an elf
+3. Compare as we iterate if the past elf has more calores than the current one
+
+
