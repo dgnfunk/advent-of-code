@@ -1,0 +1,19 @@
+1. Rock paper scissors tornaments
+    1.1 2 Players
+    1.2 3 Options
+        1.1 Rock > scissors
+        1.2 scissors > paper
+        1.3 paper > Rock
+    1.3 Game can be end in draw
+2. Input a strategy guide
+    First Column
+        A: Rock = 1
+        B: paper = 2
+        C: scissors = 3
+    Second Column
+        X: Rock
+        Y: paper
+        Z: scissors
+    Win = 6
+    Draw = 3
+    Lose = 0
