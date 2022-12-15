@@ -64,15 +64,22 @@ def day3_solution():
     pp.pprint(movements)
 
     for move in movements:
-        qty_moves = range(move['qty'])
         from_stack = stacks[move['from']]
         to_stack = stacks[move['to']]
-        for i in qty_moves:
+        if move['qty'] == 1:
             crate = from_stack.pop()
             print('Popped crate', crate)
             to_stack.append(crate)
+        else:
+            qty = -(move['qty'])
+            creates = from_stack[qty:]
+            del from_stack[qty:]
+            to_stack.extend(creates)
         
+        print('-----------------------------------------------')
         print_stacks(stacks)
 
 if __name__ == '__main__':
     day3_solution()
+
+    
