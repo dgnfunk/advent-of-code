@@ -1,4 +1,5 @@
 from os.path import dirname, join
+import time
 # first get all the commands identified
 # then identify all the different types of components
 # build the data structure and go through all the commands
@@ -171,6 +172,7 @@ def if_folder_condition(folder):
     return folder.size <= 100000
 
 if __name__ == '__main__':
+    start_time = time.perf_counter()
     current_dir = dirname(__file__)
     file_path = join(current_dir, "./input.txt")
 
@@ -189,3 +191,6 @@ if __name__ == '__main__':
         total += folder['size']
 
     print('At most Folders Total', total)
+    end_time = time.perf_counter()
+    execution_time = end_time - start_time
+    print(f"The execution time is: {execution_time}")
