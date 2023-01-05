@@ -30,6 +30,7 @@ class FileSystem:
     def __init__(self) -> None:
         self.root: Folder = None
         self.current = None
+        self.size = 70000000
 
     def add_child(self, child, parent):
         if parent is not None and parent.children is not None:
@@ -69,13 +70,13 @@ class FileSystem:
                 if found is not None:
                     return found
 
-    def find_folder_condition(self, in_folder: Folder, condition, folders):
-        if condition(in_folder) is True and type(in_folder) == Folder:
-            folders.append({ 'parent': in_folder.parent.name, 'name': in_folder.name, 'size': in_folder.size})
+    def find_folder_condition(self, in_folder: Folder, condition, folders, value):
+        if condition(in_folder, value) is True and type(in_folder) == Folder:
+            folders.append(in_folder.size)
 
         for folder in in_folder.children:
             if type(folder) is Folder:
-                self.find_folder_condition(folder, condition, folders)
+                self.find_folder_condition(folder, condition, folders, value)
 
     def set_current_folder(self, folder):
         if folder is not None:
@@ -92,11 +93,11 @@ class FileSystem:
         for item in current.children:
             if type(item) is File:
                 item.parent.size += item.size
-                print('File', item.name, item.parent.name, item.size)
+                # print('File', item.name, item.parent.name, item.size)
             elif type(item) is Folder:
                 self.get_size(item)
                 item.parent.size += item.size
-                print('Folder', item.name, item.parent.name, item.size)
+                # print('Folder', item.name, item.parent.name, item.size)
 
     def __repr__(self):
         return f"Root: {self.root}"
@@ -162,14 +163,23 @@ class Cmd:
         return commands
 
 
-def if_folder_condition(folder):
+def if_folder_less_or_equal(folder, value):
     if folder is None:
         return False
 
     if folder.size == 0:
         return False
 
-    return folder.size <= 100000
+    return folder.size <= value
+
+def if_folder_more_or_equal(folder, value):
+    if folder is None:
+        return False
+
+    if folder.size == 0:
+        return False
+
+    return folder.size >= value
 
 if __name__ == '__main__':
     start_time = time.perf_counter()
@@ -183,14 +193,20 @@ if __name__ == '__main__':
     directory.get_size(None)
 
     folders = []
-    directory.find_folder_condition(directory.root, if_folder_condition, folders)
+    directory.find_folder_condition(directory.root, if_folder_less_or_equal, folders, 100000)
+
+    print('At most Folders Total', sum(folders))
+    space_needed = 30000000
+    unused_space = directory.size - directory.root.size
+    folders_to_free_up = []
+    directory.find_folder_condition(directory.root, if_folder_more_or_equal, folders_to_free_up, (30000000 - unused_space))
+
+    print('Un used space', unused_space, unused_space < space_needed)
+    print('Folder to free up', sorted(folders_to_free_up)[0])
 
 
-    total = 0
-    for folder in folders:
-        total += folder['size']
 
-    print('At most Folders Total', total)
+
     end_time = time.perf_counter()
     execution_time = end_time - start_time
     print(f"The execution time is: {execution_time}")
